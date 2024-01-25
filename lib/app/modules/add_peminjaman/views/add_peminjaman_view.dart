@@ -13,42 +13,47 @@ class AddPeminjamanView extends GetView<AddPeminjamanController> {
         title: Text('Pinjam Buku ${Get.parameters['judul'].toString()}'),
         centerTitle: true,
       ),
-      body: Column(
-          children: [
-            Padding(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      body: Center(
+        child: Form(
+          key: controller.formKey,
+          child: Column(
+              children: [
+                Padding(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child :TextFormField(
+              controller: controller.tanggalPinjamController,
+              decoration: InputDecoration(hintText: "Masukan Tanggal Pinjam "),
+              validator: (value){
+                if (value!.isEmpty) { //minimal username
+                  return "Tanggal pinjam tidak boleh kosong";
+                }
+                return null;
+              }
+          ),
+    ),
+          Padding(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child :TextFormField(
-          controller: controller.tanggalPinjamController,
-          decoration: InputDecoration(hintText: "Masukan Tanggal Pinjam "),
-          validator: (value){
-            if (value!.isEmpty) { //minimal username
-              return "Tanggal pinjam tidak boleh kosong";
-            }
-            return null;
-          }
-      ),
-    ),
-      Padding(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      child :TextFormField(
-          controller: controller.tanggalKembaliController,
-          decoration: InputDecoration(hintText: "Masukkan Tanggal Kembali"),
-          validator: (value){
-            if (value!.length<2) { //minimal huruf password
-              return "Tanggal kembali tidak boleh kosong";
-            }
-            return null;
-          }
+              controller: controller.tanggalKembaliController,
+              decoration: InputDecoration(hintText: "Masukkan Tanggal Kembali"),
+              validator: (value){
+                if (value!.length <2) { //minimal huruf password
+                  return "Tanggal kembali tidak boleh kosong";
+                }
+                return null;
+              }
 
-      ),
-      ),
-      Obx(() => controller.loading.value?
-        CircularProgressIndicator():
-          Padding(padding: const EdgeInsets.symmetric(vertical: 10.0),
-          child: ElevatedButton(onPressed: (){
-          controller.post();
-          }, child: Text("Pinjam"))
+          ),
+          ),
+          Obx(() => controller.loading.value?
+            CircularProgressIndicator():
+              Padding(padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: ElevatedButton(onPressed: (){
+              controller.post();
+              }, child: Text("Pinjam"))
     ),
-      )
-      ],
+          )
+          ],
+          ),
+        ),
       )
     );
   }

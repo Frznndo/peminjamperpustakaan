@@ -6,6 +6,7 @@ import 'package:peminjam_perpustakaan_kelas_b/app/data/provider/storage_provider
 
 import '../../../data/constant/endpoint.dart';
 import '../../../data/provider/api_provider.dart';
+import '../../../routes/app_pages.dart';
 
 class AddPeminjamanController extends GetxController {
   final loading = false.obs;
@@ -41,14 +42,15 @@ class AddPeminjamanController extends GetxController {
         final response = await ApiProvider.instance().post(Endpoint.pinjam,
             data:
             {
-              "user_id": StorageProvider.read(StorageKey.idUser),
-              "book_id": Get.parameters['id'],
+              "user_id": int.parse(StorageProvider.read(StorageKey.idUser)),
+              "book_id": int.parse(Get.parameters['id'].toString()),
               "tanggal_pinjam": tanggalPinjamController.text.toString(),
               "tanggal_kembali": tanggalKembaliController.text.toString(),
             }
         );
         if (response.statusCode == 201) {
-          Get.back();
+          Get.snackbar("Selamat", "Berhasil Meminjam", backgroundColor: Colors.green);
+          Get.offAllNamed(Routes.BOOK);
         } else {
           Get.snackbar(
               "Sorry", "Add Peminjaman Gagal", backgroundColor: Colors.amberAccent);
